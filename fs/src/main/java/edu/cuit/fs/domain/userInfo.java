@@ -38,6 +38,11 @@ public class userInfo {
         this.ID = ID;
     }
 
+    public userInfo(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public userInfo() {
     }
 }
