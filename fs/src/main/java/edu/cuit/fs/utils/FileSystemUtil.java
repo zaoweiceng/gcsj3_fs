@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.net.URI;
 
 public class FileSystemUtil {
-    private static final String IP = "192.168.10.131";
+    private static final String IP = "192.168.10.132";
     private static final String PATH = "hdfs://"+ IP +":9000";
     public static FileSystem fs = null;
     static {

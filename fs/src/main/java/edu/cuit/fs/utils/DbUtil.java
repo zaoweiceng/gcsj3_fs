@@ -1,4 +1,5 @@
 package edu.cuit.fs.utils;
+import edu.cuit.fs.domain.userInfo;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
@@ -8,20 +9,21 @@ import java.io.IOException;
 
 public class DbUtil {
 
-    private static final String IP = "192.168.10.131";
+    private static final String IP = "192.168.10.132";
     private static final String HOST = "hdfs://" + IP +":9000/hbase";
     private static final String ZK_PORT = "2181";
     public static Configuration configuration = null;
     public static Connection connection = null;
     public static Admin admin = null;
 
-    public static void getData(String tableName, String rowKey, String colFamily, String col) throws IOException {
+    public static String getData(String tableName, String rowKey, String colFamily, String col) throws IOException {
         Table table = connection.getTable(TableName.valueOf(tableName));
         Get get = new Get(rowKey.getBytes());
         get.addColumn(colFamily.getBytes(), col.getBytes());
         Result result = table.get(get);
-        System.out.println(new String(result.getValue(colFamily.getBytes(), col.getBytes())));
+        String res = new String(result.getValue(colFamily.getBytes(), col.getBytes()));
         table.close();
+        return res;
     }
 
     public static void insertData(String tableName, String rowKey, String colFamily, String col, String val) throws IOException {
