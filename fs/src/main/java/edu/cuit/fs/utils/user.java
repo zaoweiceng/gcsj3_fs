@@ -23,6 +23,26 @@ public class user {
         return this;
     }
 
+    public boolean isPwdTrue(){
+        DbUtil.init();
+        try {
+            String data = DbUtil.getData("userinfo", this.id, "user", "password");
+            if (data == null || data == "") {
+                DbUtil.close();
+                return false;
+            }
+            if (data.equals(this.password)){
+                DbUtil.close();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DbUtil.close();
+        }
+        return false;
+    }
+
     public boolean saveUser() {
         DbUtil.init();
         try {
