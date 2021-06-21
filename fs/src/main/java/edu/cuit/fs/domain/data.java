@@ -2,6 +2,7 @@ package edu.cuit.fs.domain;
 
 import com.sun.xml.internal.ws.developer.Serialization;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Serialization
@@ -11,6 +12,7 @@ public class data {
     public List<Object> data;
 
     public data() {
+        this.data = new LinkedList<>();
     }
 
     public data(Integer code, String description, List<Object> data) {

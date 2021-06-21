@@ -1,17 +1,36 @@
 package edu.cuit.fs.controller;
 
+import com.google.gson.Gson;
+import edu.cuit.fs.domain.data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
+@CrossOrigin
 @Controller
 public class UserController {
 
-    @RequestMapping("/login")
-    public String login(String username){
+    private final Gson gson;
 
-        //map.put("loginError", "用户名或密码错误，请重新输入");
-        return "login";
+    public UserController(Gson gson) {
+        this.gson = gson;
+    }
+
+    @RequestMapping(value = "/login",  method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public @ResponseBody String login(@RequestBody Map<String , Object> msg){
+        String username = (String) msg.get("username");
+        String password = (String) msg.get("password");
+        data d = new data();
+        d.setCode(0);
+        d.setDescription("login success");
+        HashMap<String, String> map = new HashMap<>();
+        map.put("token", "test");
+        d.data.add(map);
+        String res = gson.toJson(d);
+        System.out.println(res);
+        return res;
     }
 }
