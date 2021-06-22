@@ -11,8 +11,8 @@ public class Login {
     private userInfo uf;
 
     public Login(userInfo uf) {
-        u = new user();
         this.uf = uf;
+        u = new user(this.uf);
     }
 
     public data canLogin(){

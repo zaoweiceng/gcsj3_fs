@@ -2,22 +2,17 @@ package edu.cuit.fs.domain;
 
 import com.sun.xml.internal.ws.developer.Serialization;
 
+import java.util.List;
+
 @Serialization
 public class file {
-    public String filename;
-    public String hash;
-    public String location;
+    private String filename;
+    private String hash;
+    private String location;
+    private boolean isDir;
+    private List<file> children;
 
     public file() {
-    }
-
-    @Override
-    public String toString() {
-        return "file{" +
-                "filename='" + filename + '\'' +
-                ", hash='" + hash + '\'' +
-                ", location='" + location + '\'' +
-                '}';
     }
 
     public String getFilename() {
@@ -44,9 +39,30 @@ public class file {
         this.location = location;
     }
 
-    public file(String filename, String hash, String location) {
-        this.filename = filename;
-        this.hash = hash;
-        this.location = location;
+    public boolean isDir() {
+        return isDir;
+    }
+
+    public void setDir(boolean dir) {
+        isDir = dir;
+    }
+
+    public List<file> getList() {
+        return children;
+    }
+
+    public void setList(List<file> list) {
+        this.children = list;
+    }
+
+    @Override
+    public String toString() {
+        return "file{" +
+                "filename='" + filename + '\'' +
+                ", hash='" + hash + '\'' +
+                ", location='" + location + '\'' +
+                ", isDir=" + isDir +
+                ", list=" + children +
+                '}';
     }
 }

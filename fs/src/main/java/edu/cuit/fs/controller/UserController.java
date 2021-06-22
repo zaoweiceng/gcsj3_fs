@@ -27,6 +27,7 @@ public class UserController {
         userInfo u = new userInfo();
         u.setID(username);
         u.setPassword(password);
+        System.out.println(u.getID());
         Login login = new Login(u);
         return gson.toJson(login.canLogin());
     }

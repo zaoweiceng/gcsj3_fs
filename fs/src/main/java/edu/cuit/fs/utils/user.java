@@ -46,7 +46,7 @@ public class user {
 
     private void initId(){
         DbUtil db = new DbUtil();
-        this.id = db.rowCountByCoprocessor("userinfo") + "";
+        this.id = String.format("%06d", db.rowCountByCoprocessor("userinfo"));
     }
 
     public boolean isPwdTrue(){

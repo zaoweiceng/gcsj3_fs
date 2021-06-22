@@ -18,13 +18,13 @@ public class dbTest {
         DbUtil.init();
         try {
 //            DbUtil.createTable("userinfo", new String[]{"user", "file"});
-//            DbUtil.insertData("userinfo", "zaoweiceng", "user", "username", "silence");
-            //DbUtil.insertData("userinfo", "zaoweiceng", "user", "password", "99999999");
+            DbUtil.insertData("userinfo", "zaoweiceng", "user", "username", "silence");
+            DbUtil.insertData("userinfo", "zaoweiceng", "user", "password", "99999999");
 //            DbUtil.insertData("userinfo", "zaoweiceng", "file", "asc13asc5d1s2ds2d12s", "1234560213201201212156132");
 //            DbUtil.insertData("userinfo", "zaoweiceng", "file", "aasc54654874865s4a4c", "1232156132");
 //            DbUtil.insertData("userinfo", "zaoweiceng", "file", "aasc54aa452121as84d6c", "123215zx545z112102.02156132");
-            DbUtil.getData("userinfo", "zaoweiceng", "user", "username");
-            DbUtil.getData("userinfo", "zaoweiceng", "user", "password");
+//            DbUtil.getData("userinfo", "zaoweiceng", "user", "username");
+//            DbUtil.getData("userinfo", "zaoweiceng", "user", "password");
         } catch (IOException e) {
             e.printStackTrace();
         }
