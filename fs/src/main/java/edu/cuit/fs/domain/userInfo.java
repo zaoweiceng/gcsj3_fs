@@ -4,9 +4,9 @@ import com.sun.xml.internal.ws.developer.Serialization;
 
 @Serialization
 public class userInfo {
-    public String username;
-    public String password;
-    public String ID;
+    private String username;
+    private String password;
+    private String ID;
 
     public String getUsername() {
         return username;

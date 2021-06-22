@@ -1,8 +1,11 @@
 package edu.cuit.fs.utils;
+
 import edu.cuit.fs.domain.userInfo;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.client.coprocessor.AggregationClient;
+import org.apache.hadoop.hbase.client.coprocessor.LongColumnInterpreter;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
@@ -10,7 +13,7 @@ import java.io.IOException;
 public class DbUtil {
 
     private static final String IP = "192.168.10.132";
-    private static final String HOST = "hdfs://" + IP +":9000/hbase";
+    private static final String HOST = "hdfs://" + IP + ":9000/hbase";
     private static final String ZK_PORT = "2181";
     public static Configuration configuration = null;
     public static Connection connection = null;
@@ -36,11 +39,11 @@ public class DbUtil {
 
     public static void createTable(String tableName, String[] colName) throws IOException {
         TableName tbName = TableName.valueOf(tableName);
-        if (admin.tableExists(tbName)){
+        if (admin.tableExists(tbName)) {
             System.out.println("table exist");
-        }else {
+        } else {
             HTableDescriptor hTableDescriptor = new HTableDescriptor(tbName);
-            for (String str: colName){
+            for (String str : colName) {
                 HColumnDescriptor hColumnDescriptor = new HColumnDescriptor(str);
                 hTableDescriptor.addFamily(hColumnDescriptor);
             }
@@ -48,20 +51,20 @@ public class DbUtil {
         }
     }
 
-    public static void close(){
+    public static void close() {
         try {
-            if (admin != null){
+            if (admin != null) {
                 admin.close();
             }
-            if (connection != null){
+            if (connection != null) {
                 connection.close();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void init(){
+    public static void init() {
         configuration = HBaseConfiguration.create();
         configuration.set("hbase.rootdir", HOST);
         configuration.set("hbase.zookeeper.quorum", IP);
@@ -69,8 +72,42 @@ public class DbUtil {
         try {
             connection = ConnectionFactory.createConnection(configuration);
             admin = connection.getAdmin();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public Integer rowCountByCoprocessor(String tablename) {
+        Integer count = 0;
+        try {
+            //提前创建connection和conf
+            Configuration conf = HBaseConfiguration.create();
+            conf.set("hbase.rootdir", HOST);
+            conf.set("hbase.zookeeper.quorum", IP);
+            conf.set("hbase.zookeeper.property.clientPort", ZK_PORT);
+            Admin admin = ConnectionFactory.createConnection(conf).getAdmin();
+            TableName name = TableName.valueOf(tablename);
+            //先disable表，添加协处理器后再enable表
+            admin.disableTable(name);
+            HTableDescriptor descriptor = admin.getTableDescriptor(name);
+            String coprocessorClass = "org.apache.hadoop.hbase.coprocessor.AggregateImplementation";
+            if (!descriptor.hasCoprocessor(coprocessorClass)) {
+                descriptor.addCoprocessor(coprocessorClass);
+            }
+            admin.modifyTable(name, descriptor);
+            admin.enableTable(name);
+
+
+            Scan scan = new Scan();
+            AggregationClient aggregationClient = new AggregationClient(conf);
+            admin.close();
+            count = Math.toIntExact(aggregationClient.rowCount(name, new LongColumnInterpreter(), scan));
+            aggregationClient.close();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return count;
+
+    }
+
 }

@@ -1,5 +1,7 @@
 package edu.cuit.fs.utils;
 
+import edu.cuit.fs.domain.userInfo;
+
 import java.io.IOException;
 import java.util.Random;
 
@@ -8,19 +10,43 @@ public class user {
     private String password;
     private String id;
 
+    public user() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public user(userInfo u) {
+        this.username = u.getUsername();
+        this.password = u.getPassword();
+        this.id = u.getID();
+    }
+
     public user initUser(String username, String password) {
-        Random random = new Random();
-        while (true) {
-            Integer ID = (int) (random.nextDouble() * 10e6);
-            this.username = username;
-            this.password = password;
-            this.id = ID.toString().substring(0, 6);
-            if (!idIsUsed(this.id)) {
-                break;
-            }
-            System.out.println(this.id + "is used!!!!!!!!!!");
-        }
+        this.username = username;
+        this.password = password;
+        this.initId();
         return this;
+    }
+    public user initUser(userInfo u) {
+        this.username = u.getUsername();
+        this.password = u.getPassword();
+        this.initId();
+        return this;
+    }
+    public user initUser() {
+        this.initId();
+        return this;
+    }
+
+    private void initId(){
+        DbUtil db = new DbUtil();
+        this.id = db.rowCountByCoprocessor("userinfo") + "";
     }
 
     public boolean isPwdTrue(){
@@ -56,6 +82,17 @@ public class user {
             DbUtil.close();
         }
         return false;
+    }
+
+    public void save(String col, String id,  String data){
+        DbUtil.init();
+        try {
+            DbUtil.insertData("userinfo", id, "user", col, data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            DbUtil.close();
+        }
     }
 
     public String getUsername() {

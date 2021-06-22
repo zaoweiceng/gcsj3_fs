@@ -47,4 +47,11 @@ public class dbTest {
         userFileInfo info = gson.fromJson(jsonElement, userFileInfo.class);
         System.out.println(info);
     }
+
+    @Test
+    public void countTest(){
+        DbUtil db = new DbUtil();
+        db.rowCountByCoprocessor("userinfo");
+    }
+
 }
