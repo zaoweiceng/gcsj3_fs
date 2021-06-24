@@ -53,7 +53,7 @@ public class user {
         DbUtil.init();
         try {
             String data = DbUtil.getData("userinfo", this.id, "user", "password");
-            if (data == null || data == "") {
+            if (data == null || data.equals("")) {
                 DbUtil.close();
                 return false;
             }

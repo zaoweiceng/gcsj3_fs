@@ -8,17 +8,26 @@ import org.apache.hadoop.fs.Path;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 
 public class FileSystemUtil {
     private static final String IP = "192.168.10.132";
     private static final String PATH = "hdfs://"+ IP +":9000";
     public static FileSystem fs = null;
-    static {
+    public static void init(){
         try {
             URI uri = new URI(PATH);
             fs = FileSystem.get(uri, new Configuration());
         }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void close(){
+        try {
+            fs.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -32,21 +41,15 @@ public class FileSystemUtil {
         }
     }
 
-    public static void createFiles(String path, byte[] contents){
+    public OutputStream getOutputStream(String path){
         FSDataOutputStream outputStream = null;
-        Path srcPath = new Path(path);
+        Path srcPath = new Path("/user" + path);
         try {
             outputStream = fs.create(srcPath);
-            outputStream.write(contents);
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            try {
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
+        return outputStream;
     }
 
     public static void rename(String oldName, String newName){
@@ -59,15 +62,15 @@ public class FileSystemUtil {
         }
     }
 
-    public static InputStream getData(String src){
+    public InputStream getData(String src){
         Path path = new Path(src);
+        FSDataInputStream inputStream = null;
         try {
-            FSDataInputStream in = fs.open(path);
-            return in;
+            inputStream = fs.open(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return inputStream;
     }
 
 }

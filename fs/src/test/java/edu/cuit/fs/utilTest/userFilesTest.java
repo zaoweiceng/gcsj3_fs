@@ -10,22 +10,40 @@ import java.util.List;
 public class userFilesTest {
 
     @Test
-    public void test(){
-        userFiles ufs = new userFiles("123456");
-        List<file> list = new LinkedList<>();
-        file f = new file();
-        f.setLocation(list.size() + 1 + "");
-        f.setFilename("demoTest");
-        f.setDir(false);
-        List<file> t = new LinkedList<>();
-        t.add(f);
-        list.add(f);
+    public void test() {
+        userFiles usf = new userFiles("123456");
+        String res = usf.setFiles(new LinkedList<>())
+                .insertFiles(false, "demo.txt", "0", "asdasdasd")
+                .insertFiles(false, "text.txt", "0", "asdasdasd")
+                .insertFiles(true, "A", "1", 0)
+                .insertFiles(true, "b", "2", 0)
+                .insertFiles(true, "C", "1_2", 0)
+                .insertFiles(true, "D", "1_3", 0)
+                .insertFiles(false, "b.aaa", "1_1", "asasdasd")
+                .insertFiles(false, "asda", "1_2_1", "asasdasd")
+                .toString();
+        System.out.println(res);
+    }
 
-        f.setLocation(list.size() + 1 + "");
-        f.setFilename("demoTest1");
-        f.setDir(true);
-        f.setList(t);
-        ufs.setFiles(list).insertFiles();
+    @Test
+    public void saveTest() {
+        userFiles usf = new userFiles("zaoweiceng");
+        usf.setFiles(new LinkedList<>())
+                .insertFiles(false, "demo.txt", "0", "asdasdasd")
+                .insertFiles(false, "text.txt", "0", "asdasdasd")
+                .insertFiles(true, "A", "1", 0)
+                .insertFiles(true, "b", "2", 0)
+                .insertFiles(true, "C", "1_2", 0)
+                .insertFiles(true, "D", "1_3", 0)
+                .insertFiles(false, "b.aaa", "1_1", "asasdasd")
+                .insertFiles(false, "asda", "1_2_1", "asasdasd")
+                .saveFileInfo();
+    }
+
+    @Test
+    public void getTest(){
+        userFiles usf = new userFiles("zaoweiceng");
+        System.out.println(usf.init().toString());
     }
 
 }
