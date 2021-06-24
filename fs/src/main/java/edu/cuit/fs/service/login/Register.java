@@ -16,9 +16,9 @@ public class Register {
 
     public data regist(String sign){
         data res = new data();
-        res.code = 0;
         if (sign.equals(sign)){
-            Userinfo.initUser().saveUser();
+            res.code = 0;
+            Userinfo.initUser();
             HashMap<String, String> map = new HashMap<>();
             map.put("ID", Userinfo.getId());
             res.data.add(map);
