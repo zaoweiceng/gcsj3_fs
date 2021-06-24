@@ -27,6 +27,7 @@ public class Forget {
         try {
             Userinfo.save("password", id, password);
             res.code = 0;
+            return res;
         }catch (Exception e){
 
         }finally {
