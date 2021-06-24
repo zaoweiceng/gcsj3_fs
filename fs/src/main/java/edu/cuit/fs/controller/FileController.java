@@ -34,6 +34,9 @@ public class FileController {
         }catch (Exception e){
             e.printStackTrace();
             res.code = -2;
+            FileSystemUtil.close();
+        }finally {
+            FileSystemUtil.close();
         }
         return gson.toJson(res);
     }
