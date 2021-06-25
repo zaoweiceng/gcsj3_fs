@@ -45,5 +45,10 @@ public class userFilesTest {
         userFiles usf = new userFiles("zaoweiceng");
         System.out.println(usf.init().toString());
     }
+    @Test
+    public void getTest1(){
+        userFiles usf = new userFiles("zaoweiceng");
+        System.out.println(usf.init().getFiles());
+    }
 
 }

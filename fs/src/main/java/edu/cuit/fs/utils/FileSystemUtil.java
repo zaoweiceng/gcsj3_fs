@@ -26,7 +26,7 @@ public class FileSystemUtil {
 
     public static void close(){
         try {
-            fs.close();
+            if (fs != null)  fs.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
